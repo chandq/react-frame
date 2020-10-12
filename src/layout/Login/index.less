@@ -1,0 +1,37 @@
+.originvalue(@value) {
+  @origin: unit(@value, Px);
+}
+
+:global {
+  .myheader {
+    color: #fff;
+  }
+  .login {
+    color: aqua;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .login-form {
+      width: 220px;
+      & > div {
+        margin-top: unit(10, Px);
+        &:nth-child(3) {
+          display: flex;
+          justify-content: center;
+        }
+      }
+      .ant-form-item-control {
+        text-align: center;
+      }
+      .login-form-button {
+        font-size: 18px;
+        span {
+          line-height: unset;
+        }
+      }
+    }
+  }
+}

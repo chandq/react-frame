@@ -1,0 +1,65 @@
+:global {
+  .home-layout {
+    width: 100%;
+    height: 100%;
+    .ant-layout-content {
+      overflow: auto;
+    }
+  }
+  .ignore-trigger {
+    /* prettier-ignore */
+    font-size: 20Px;
+    line-height: 64px;
+    /* prettier-ignore */
+    margin-left: 20PX;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  .ignore-trigger:hover {
+    color: #1890ff;
+  }
+  .logo {
+    height: 32px;
+    /* prettier-ignore */
+    min-height: 20Px;
+    /* prettier-ignore */
+    margin: 16Px;
+    h1 {
+      display: inline-block;
+      margin: 0 0 0 12px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 18px;
+      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+      vertical-align: middle;
+    }
+  }
+  .headerinfo {
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    padding: 0 30px 0 30px;
+
+    box-sizing: border-box;
+    height: 64px;
+    .userbar {
+      display: inline-block;
+      .user-img {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 10px;
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .user-name {
+        line-height: 64px;
+        vertical-align: middle;
+      }
+    }
+  }
+}

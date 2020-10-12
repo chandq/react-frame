@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-size: 14px;
+  overflow: hidden;
+  height: 100%;
+}
+
+* {
+  font-family: '微软雅黑', '苹方', Arial, 'Hiragino Sans GB', 'Microsoft Yahei', 'Microsoft Sans Serif', sans-serif,
+    'Noto Sans CJK JP';
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+textarea {
+  resize: none;
+}
+
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 11px;
+  background-clip: content-box;
+  border: 3px solid transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}

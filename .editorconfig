@@ -1,0 +1,23 @@
+# http://editorconfig.org
+# 这是根文件，不用继续往上查找
+root = true
+
+# 匹配全部文件
+[*]
+# 缩进风格，可选"space"、"tab"
+indent_style = space
+# 缩进的空格树 2
+indent_size = 2
+# 结尾换行符，可选"if"、"or"、"crlf"
+# 默认的换行符在各操作系统下是不一致的，Windows 是 CRLF（’\r\n’），Mac、Linux是 LF（’\n’）。git 会依据操作系统自动变更文件换行符，这是项目级别的。
+end_of_line = lf
+# 设置字符集
+charset = utf-8
+# 在文件结尾插入新行
+insert_final_newline = true
+# 删除一行中的前后空格
+trim_trailing_whitespace = true
+
+[*.md]
+# 不删除一行中的前后空格
+trim_trailing_whitespace = false
