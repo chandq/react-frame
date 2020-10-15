@@ -111,6 +111,26 @@ export function downloadFileByLink(fileName, href) {
   link.click()
   tmpEle.remove()
 }
+export function downloadByStream({ method = 'GET', url, data = {}, fileName = '文件.xlsx' }) {
+  const req = new XMLHttpRequest();
+  req.open(method, url, true);
+  req.responseType = 'blob';
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.onload = function() {
+    const data = req.response;
+    const blob = new Blob([data]);
+    const blobUrl = window.URL.createObjectURL(blob);
+    download(blobUrl, fileName);
+  };
+  req.send(JSON.stringify(data));
+}
+
+function download(blobUrl, fileName) {
+  const a = document.createElement('a');
+  a.download = fileName;
+  a.href = blobUrl;
+  a.click();
+}
 /**
  * @desc 根据当前往后推算的天数获得具体的日期时间 YYYY-MM-DD HH:mm:ss
  * new Date( 年 ，月 ，0 ).getDate() // 即获取当月最大天数
