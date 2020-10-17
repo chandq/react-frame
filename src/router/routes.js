@@ -1,7 +1,8 @@
 import { lazy } from 'react'
 import Page404 from '../pages/404'
 import Login from '../layout/Login'
-const Home = lazy(() => import(/* webpackChunkName: "home-vendor" */ '../layout/Index'))
+// const Home = lazy(() => import(/* webpackChunkName: "home-vendor" */ '../layout/Index'))
+import Portal from '../layout/Index'
 import Homepage from '../pages/Home'
 
 const routes = [
@@ -23,7 +24,7 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    layout: Home,
+    layout: Portal,
     children: [
       {
         path: '/home/portal',
