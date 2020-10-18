@@ -20,9 +20,7 @@ shebangCommand('#!/usr/bin/env node')
 module.exports = {
   mode: 'production',
   entry: {
-    vendor: ['lodash', 'dva'],
-    react: ['react', 'react-dom', 'react-router', 'react-router-dom'],
-    three: ['three']
+    react: ['react', 'react-dom', 'react-router', 'react-router-dom', 'dva']
   },
   output: {
     filename: '[name]-[hash:8].dll.js',

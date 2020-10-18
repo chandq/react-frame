@@ -23,7 +23,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const TerserPlugin = require('terser-webpack-plugin')
 process.env.PUBLIC_URL = env.publicPath
 
-const plugins = [
+let plugins = [
   new CleanWebpackPlugin(), // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
   //插件
   new HtmlWebpackPlugin({
@@ -47,19 +47,19 @@ const plugins = [
       if (/\.png$/.test(entry)) return 'image'
       return 'script'
     },
-    include: ['home', 'main']
+    include: ['react', 'main']
   }),
   new PreloadWebpackPlugin({
     rel: 'prefetch',
-    as: 'script',
+    // as: 'script',
     // as(entry) {
     //   if (/\.css$/.test(entry)) return 'style';
     //   return 'script';//首席填坑官∙苏南的专栏，QQ:912594095
     // },
-    include: 'asyncChunks',
-    // include: 'allChunks',
+    // include: 'asyncChunks',
+    include: 'allChunks',
     // fileBlacklist: ["index.css"]
-    fileBlacklist: [/index.css|index.js|vendors.js/, /\.whatever/]
+    fileBlacklist: [/index.css|index.js/, /main.*/, /react/]
   }),
   new webpack.DefinePlugin({
     'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL)
