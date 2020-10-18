@@ -56,8 +56,8 @@ let plugins = [
     //   if (/\.css$/.test(entry)) return 'style';
     //   return 'script';//首席填坑官∙苏南的专栏，QQ:912594095
     // },
-    // include: 'asyncChunks',
-    include: 'allChunks',
+    include: 'asyncChunks',
+    // include: 'allChunks',
     // fileBlacklist: ["index.css"]
     fileBlacklist: [/index.css|index.js/, /main.*/, /react/]
   }),
