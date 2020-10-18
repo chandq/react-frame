@@ -35,7 +35,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/wwdragon/react-best-practice"
+    "url": "https://github.com/chandq/react16-frame.git"
   },
   "author": "chendq",
   "license": "ISC",
