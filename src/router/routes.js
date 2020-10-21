@@ -2,6 +2,9 @@ import { lazy } from 'react'
 import Page404 from '../pages/404'
 import Login from '../layout/Login'
 // const Home = lazy(() => import(/* webpackChunkName: "home-vendor" */ '../layout/Index'))
+// import Yunapp from '../pages/Mydemo/Yunapp'
+// import Visual from '../pages/Mydemo/Visual'
+// import Canvas from '../pages/Mydemo/Canvas'
 import Portal from '../layout/Index'
 import Homepage from '../pages/Home'
 
@@ -35,6 +38,7 @@ const routes = [
         path: '/home/mydemo/yunapp',
         name: 'yunapp',
         component: lazy(() => import('../pages/Mydemo/Yunapp'))
+        // component: Yunapp
       },
       {
         path: '/home/mydemo/visual',
@@ -46,6 +50,7 @@ const routes = [
         path: '/home/mydemo/canvas',
         name: 'canvas',
         component: lazy(() => import('../pages/Mydemo/Canvas'))
+        // component: Canvas
       }
     ]
   }

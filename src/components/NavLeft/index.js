@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { UserOutlined, VideoCameraOutlined, DesktopOutlined, BarChartOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
-import { routerRedux, withRouter } from 'dva/router' //dva的routerRedux实现路由跳转需通过dispatch触发
+import { routerRedux, withRouter, Link } from 'dva/router' //dva的routerRedux实现路由跳转需通过dispatch触发
 //如果要使用this.props.history.push(),引入withRouter高阶函数即可。import {withRouter} from 'dva/router';
 //如果要是有Link标签实现声明式跳转，引入Link组件即可。import {Link} from 'dva/router';
 
@@ -80,6 +80,8 @@ class NavLeft extends Component {
     return icons[name]
   }
 
+  getRoutePath = path => (basename + path).replace('//', '/')
+
   renderMenu(data) {
     if (data.length) {
       return data.map(item => {
@@ -97,9 +99,11 @@ class NavLeft extends Component {
               {item.children.map(it => (
                 <Menu.Item
                   key={it.href && it.href.split('/')[3] ? it.href.split('/')[3].split('?')[0] : it.href}
-                  onClick={keyPath => this.jump(it.href, keyPath)}
+                  // onClick={keyPath => this.jump(it.href, keyPath)}
                 >
-                  <span>{it.name}</span>
+                  <span>
+                    <Link to={this.getRoutePath(it.href)}>{it.name}</Link>
+                  </span>
                 </Menu.Item>
               ))}
             </SubMenu>
@@ -108,10 +112,12 @@ class NavLeft extends Component {
           return (
             <Menu.Item
               key={item.href && item.href.split('/')[2] ? item.href.split('/')[2].split('?')[0] : item.href}
-              onClick={keyPath => this.jump(item.href, keyPath)}
+              // onClick={keyPath => this.jump(item.href, keyPath)}
             >
               {item.icon ? this.getIcon(item.icon) : <VideoCameraOutlined />}
-              <span>{item.name}</span>
+              <span>
+                <Link to={this.getRoutePath(item.href)}>{item.name}</Link>
+              </span>
             </Menu.Item>
           )
         }

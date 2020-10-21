@@ -26,9 +26,9 @@ const parseRoutes = (routesConfig, app) => {
               if (children) {
                 return (
                   <Layout>
-                    {/* <Component {...props} /> */}
-                    {parseRoutes(children, app)}
-                    {/* <Switch>{parseRoutes(children, app)}</Switch> */}
+                    <Suspense fallback={<Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%' }} />}>
+                      {parseRoutes(children, app)}
+                    </Suspense>
                   </Layout>
                 )
               } else {
@@ -55,12 +55,10 @@ const parseRoutes = (routesConfig, app) => {
 export default function RouterConfig({ history, app }) {
   return (
     <ConnectedRouter history={history}>
-      <Suspense fallback={<Spin size="large" style={{ position: 'fixed', top: '50%', left: '50%' }} />}>
-        <Switch>
-          {parseRoutes(routes, app)}
-          <Redirect to={getRoutePath('/404')}></Redirect>
-        </Switch>
-      </Suspense>
+      <Switch>
+        {parseRoutes(routes, app)}
+        <Redirect to={getRoutePath('/404')}></Redirect>
+      </Switch>
     </ConnectedRouter>
   )
 }
