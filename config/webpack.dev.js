@@ -36,10 +36,13 @@ const plugins = [
     template: 'public/index.html',
     favicon: 'public/favicon.ico'
   }),
+  new webpack.DefinePlugin({
+    'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL)
+  }),
   // new CleanWebpackPlugin(), // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
-  new webpack.NamedModulesPlugin(), //用于启动HMR时可以显示模块的相对路径
+  // new webpack.NamedModulesPlugin(), //用于启动HMR时可以显示模块的相对路径
   new webpack.HotModuleReplacementPlugin(), // 开启模块热更新，热加载和模块热更新不同，热加载是整个页面刷新
-  new webpack.optimize.ModuleConcatenationPlugin(), // 运行 tree shaking 需要 ModuleConcatenationPlugin。
+  // new webpack.optimize.ModuleConcatenationPlugin(), // 运行 tree shaking 需要 ModuleConcatenationPlugin。
   //通过 mode: "production" 可以添加此插件。如果你是开发环境就需要手动添加
   new WebpackBar(), // webpack打包进度条
   // new FriendlyErrorsWebpackPlugin(), // 能够更好在终端看到webapck运行的警告和错误
@@ -74,7 +77,7 @@ if (process.env.NODE_ENV === 'ana') {
 
 const webpackConfigDev = {
   mode: 'development', //模式,表示dev环境
-  devtool: 'cheap-module-eval-source-map', // 开发环境配置最佳实践
+  devtool: 'eval-cheap-module-source-map', // 开发环境配置最佳实践
   //devtool译为webpack的调试模式，可以配置sourceMap
   //sourceMap本质上是一种映射关系，打包出来的js文件中的代码可以映射到代码文件的具体位置,这种映射关系会帮助我们直接找到在源代码中的错误。
   //可以直接在devtool中使用.合理的使用source-map可以帮助我们提高开发效率，更快的定位到错误位置。生产环境和开发环境的devtool配置是不同的。

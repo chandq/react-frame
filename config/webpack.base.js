@@ -17,10 +17,7 @@ module.exports = {
       {
         /**js的配置 */
         test: /\.(js|jsx)$/, // 注意这里要写正确，不然useBuiltIns不起作用,useBuiltIns被抽离在.babelrc文件
-        include: [
-          // 表示只解析以下目录，减少loader处理范围
-          path.resolve(__dirname, '../src')
-        ],
+        include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围,
         exclude: /node_modules/, // 排除node_modules中的代码module: {
         //   rules: [
         //     {
@@ -73,7 +70,9 @@ module.exports = {
       },
 
       {
-        /**图标和图片的处理的配置 */ test: /\.(png|jpg|gif|jpeg)$/,
+        /**图标和图片的处理的配置 */
+        test: /\.(png|jpg|gif|jpeg)$/,
+        include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围
         use: {
           loader: 'url-loader',
           options: {
@@ -86,6 +85,7 @@ module.exports = {
       },
       {
         test: /\.(eot|woff2?|ttf|svg)$/,
+        include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围
         use: {
           loader: 'url-loader',
           options: {
