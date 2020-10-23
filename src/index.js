@@ -37,3 +37,7 @@ app.router(require('./router/index').default)
 
 //4.Start
 app.start('#root')
+
+if (module.hot) {
+  module.hot.accept()
+}

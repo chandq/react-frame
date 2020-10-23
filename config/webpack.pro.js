@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin') // 向dist文件中自�
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
 //但是这个插件目前还不支持HMR,为了不影响开发效率，因此就在生成环境下使用该插件
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //这个插件可以帮助我们把相同的样式合并。
-const CSSSplitWebpackPlugin = require('css-split-webpack-plugin').default //插件可以帮我们把过大的css文件拆分
+// const CSSSplitWebpackPlugin = require('css-split-webpack-plugin').default //插件可以帮我们把过大的css文件拆分
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin') //将打包生产的dll.js文件自动引入html
 const fs = require('fs') //fs文件读取
 const WorkboxPlugin = require('workbox-webpack-plugin') //PWA全称progressive Web Application,PWA实现的功能是即便服务器挂掉，还是可以通过在本地的缓存来访问到页面。
@@ -35,10 +35,10 @@ let plugins = [
     filename: 'static/css/[name].css',
     chunkFilename: 'static/css/[name].chunk.css'
   }),
-  new CSSSplitWebpackPlugin({
-    size: 4000,
-    filename: '[name]-[part].[ext]'
-  }),
+  // new CSSSplitWebpackPlugin({
+  //   size: 4000,
+  //   filename: '[name]-[part].[ext]'
+  // }),
   new PreloadWebpackPlugin({
     rel: 'preload',
     as(entry) {
@@ -76,10 +76,10 @@ let plugins = [
       }
     ]
   }),
-  new webpack.HashedModuleIdsPlugin(), //根据模块的相对路径生成一个四位数的hash,实现持久化缓存,生产环境建议使用
   //为了解决浏览器文件缓存问题，例如：代码更新后，文件名称未改变，浏览器非强制刷新后，浏览器去请求文件时认为文件名称未改变而直接从缓存中读取不去重新请求。
   //我们可以在webpack.production.js输出文件名称中添加hash值.
   //使用HashedModuleIdsPlugin的原因是可以当更改某一个文件时，只改变这一个文件的hash值，而不是所有的文件都改变。
+  // new webpack.HashedModuleIdsPlugin(), //根据模块的相对路径生成一个四位数的hash,实现持久化缓存,生产环境建议使用
   new WorkboxPlugin.GenerateSW({
     //PWA优化
     clientsClaim: true,
@@ -158,9 +158,9 @@ const webpackConfigPro = {
       new OptimizeCSSAssetsPlugin({}),
       // 压缩JS
       new TerserPlugin({
-        cache: true,
+        // cache: true,
         parallel: true,
-        sourceMap: false,
+        // sourceMap: false,
         terserOptions: {
           warnings: false,
           compress: {
@@ -181,62 +181,16 @@ const webpackConfigPro = {
     splitChunks: {
       //代码分割SplitChunksPlugin配置
       chunks: 'all', // 只对异步引入代码起作用，设置all时并同时配置vendors才对两者起作用
-      minSize: 30000, // 引入的库大于30kb时才会做代码分割
+      minSize: { javascript: 30000, style: 50000 }, // 引入的库大于30kb时才会做代码分割
       minChunks: 1, // 一个模块至少被用了1次才会被分割
       maxAsyncRequests: 6, // 同时异步加载的模块数最多是5个，如果超过5个则不做代码分割
       maxInitialRequests: 3, // 入口文件进行加载时，引入的库最多分割出3个js文件
       automaticNameDelimiter: '~', // 生成文件名的文件链接符
-      name: true, // 开启自定义名称效果
+      name: 'cdq', // 开启自定义名称效果
       cacheGroups: {
-        // vendor: {
-        //   test: /[\\/]node_modules[\\/]/,
-        //   name(module) {
-        //     // get the name. E.g. node_modules/packageName/not/this/part.js
-        //     // or node_modules/packageName
-        //     const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
-        //     // npm package names are URL-safe, but some servers don't like @ symbols
-        //     return `npm.${packageName.replace('@', '')}`
-        //   }
-        // }
-        // vendors: {
-        //   priority: -10,
-        //   minChunks: 1, //敲黑板
-        //   test: module => {
-        //     const packageName = getModulePackageName(module)
-        //     // console.log('packageName: ', packageName)
-        //     if (packageName) {
-        //       return true
-        //     }
-        //     return false
-        //   },
-        //   name(module) {
-        //     const packageName = getModulePackageName(module)
-        //     // console.log('packageName2: ', /[ant|html2canvas|mock|lodash|d3]/.test(packageName), packageName)
-        //     if (packageName && /(axios|antd|ant-design|html2canvas|mock|lodash|d3)/.test(packageName)) {
-        //       return packageName
-        //     }
-        //     return `vendors`
-        //   }
-        // },
-        // 判断分割出的代码放到哪个文件
-        commons: {
-          // chunks: 'all',
-          minChunks: 2,
-          maxInitialRequests: 5
-          // minSize: 0
-        },
-        vendors: {
-          // 配合chunks： ‘all’使用，表示如果引入的库是在node-modules中，那就会把这个库分割出来并起名为vendors.js
-          test: /[\\/]node_modules[\\/]/,
+        defaultVendors: {
           name: 'vendors',
           priority: -10
-        },
-        default: {
-          // 为非node-modules库中分割出的代码设置默认存放名称
-          name: 'common',
-          priority: -20,
-          minChunks: 2, //一般为非第三方公共模块
-          reuseExistingChunk: true // 避免被重复打包分割
         }
       }
     }
