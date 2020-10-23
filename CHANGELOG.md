@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/chandq/react16-frame/compare/v2.0.0...v2.1.0) (2020-10-23)
+
+
+### Features
+
+* upgrade webpack5, and other all depedencies ([bdb6352](https://github.com/chandq/react16-frame/commit/bdb63525575884ecd7e6f72d584e81cac70431d9))
+
+
+### Bug Fixes
+
+* **build:** issue of module hot reload ([1f476ef](https://github.com/chandq/react16-frame/commit/1f476ef9d015d7bf689426d9bcd97b29fd46fe4d))
+
 ## [2.0.0](https://github.com/chandq/react16-frame/compare/v1.1.0...v2.0.0) (2020-10-23)
 
 
