@@ -188,53 +188,9 @@ const webpackConfigPro = {
       automaticNameDelimiter: '~', // 生成文件名的文件链接符
       name: 'cdq', // 开启自定义名称效果
       cacheGroups: {
-        // vendor: {
-        //   test: /[\\/]node_modules[\\/]/,
-        //   name(module) {
-        //     // get the name. E.g. node_modules/packageName/not/this/part.js
-        //     // or node_modules/packageName
-        //     const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
-        //     // npm package names are URL-safe, but some servers don't like @ symbols
-        //     return `npm.${packageName.replace('@', '')}`
-        //   }
-        // }
-        // vendors: {
-        //   priority: -10,
-        //   minChunks: 1, //敲黑板
-        //   test: module => {
-        //     const packageName = getModulePackageName(module)
-        //     // console.log('packageName: ', packageName)
-        //     if (packageName) {
-        //       return true
-        //     }
-        //     return false
-        //   },
-        //   name(module) {
-        //     const packageName = getModulePackageName(module)
-        //     // console.log('packageName2: ', /[ant|html2canvas|mock|lodash|d3]/.test(packageName), packageName)
-        //     if (packageName && /(axios|antd|ant-design|html2canvas|mock|lodash|d3)/.test(packageName)) {
-        //       return packageName
-        //     }
-        //     return `vendors`
-        //   }
-        // },
-        // 判断分割出的代码放到哪个文件
-        commons: {
-          // chunks: 'all',
-          minChunks: 2,
-          maxInitialRequests: 5
-          // minSize: 0
-        },
         defaultVendors: {
           name: 'vendors',
           priority: -10
-        },
-        default: {
-          // 为非node-modules库中分割出的代码设置默认存放名称
-          name: 'common',
-          priority: -20,
-          minChunks: 2, //一般为非第三方公共模块
-          reuseExistingChunk: true // 避免被重复打包分割
         }
       }
     }

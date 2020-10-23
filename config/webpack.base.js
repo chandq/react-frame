@@ -8,6 +8,7 @@ module.exports = {
       '@': path.resolve(__dirname, '../src')
     }
   },
+  target: ['web', 'es2020'],
   module: {
     //加载模块规则,让 webpack 能够去处理那些非 JavaScript 文件,当然也能处理js文件
     /**我们在 webpack 中定义的一个个 loader，本质上只是一个函数，在定义 loader 同时还会定义一个 test 属性，
@@ -19,13 +20,6 @@ module.exports = {
         test: /\.(js|jsx)$/, // 注意这里要写正确，不然useBuiltIns不起作用,useBuiltIns被抽离在.babelrc文件
         include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围,
         exclude: /node_modules/, // 排除node_modules中的代码module: {
-        //   rules: [
-        //     {
-        //       test: /\.css$/, //寻找css文件
-        //       use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] //使用MiniCssExtractPlugin.loader,css-loader,postcss-loader
-        //     }
-        //   ]
-        // },
         use: [
           {
             loader: 'babel-loader', // 只是babel和webpack之间的桥梁，并不会将代码转译
