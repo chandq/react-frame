@@ -8,14 +8,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin') // 向dist文件中自�
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
 //但是这个插件目前还不支持HMR,为了不影响开发效率，因此就在生成环境下使用该插件
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //这个插件可以帮助我们把相同的样式合并。
-// const CSSSplitWebpackPlugin = require('css-split-webpack-plugin').default //插件可以帮我们把过大的css文件拆分
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin') //将打包生产的dll.js文件自动引入html
 const fs = require('fs') //fs文件读取
 const WorkboxPlugin = require('workbox-webpack-plugin') //PWA全称progressive Web Application,PWA实现的功能是即便服务器挂掉，还是可以通过在本地的缓存来访问到页面。
 //运行命令打包后会多出两个文件precache-manifest.js和service-worker.js, service-worker这个文件就可以让我们的页面被缓存住
 //关于PWA介绍https://lavas.baidu.com/pwa/README
 const WebpackBar = require('webpackbar') // webpack打包进度条
-// const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin') // 能够更好在终端看到webapck运行的警告和错误
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //想要分开打包我们的css文件，需要使用mini-css-extract-plugin这个插件，
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
@@ -35,10 +33,6 @@ let plugins = [
     filename: 'static/css/[name].css',
     chunkFilename: 'static/css/[name].chunk.css'
   }),
-  // new CSSSplitWebpackPlugin({
-  //   size: 4000,
-  //   filename: '[name]-[part].[ext]'
-  // }),
   new PreloadWebpackPlugin({
     rel: 'preload',
     as(entry) {
@@ -51,11 +45,6 @@ let plugins = [
   }),
   new PreloadWebpackPlugin({
     rel: 'prefetch',
-    // as: 'script',
-    // as(entry) {
-    //   if (/\.css$/.test(entry)) return 'style';
-    //   return 'script';//首席填坑官∙苏南的专栏，QQ:912594095
-    // },
     include: 'asyncChunks',
     // include: 'allChunks',
     // fileBlacklist: ["index.css"]
@@ -78,15 +67,12 @@ let plugins = [
   }),
   //为了解决浏览器文件缓存问题，例如：代码更新后，文件名称未改变，浏览器非强制刷新后，浏览器去请求文件时认为文件名称未改变而直接从缓存中读取不去重新请求。
   //我们可以在webpack.production.js输出文件名称中添加hash值.
-  //使用HashedModuleIdsPlugin的原因是可以当更改某一个文件时，只改变这一个文件的hash值，而不是所有的文件都改变。
-  // new webpack.HashedModuleIdsPlugin(), //根据模块的相对路径生成一个四位数的hash,实现持久化缓存,生产环境建议使用
   new WorkboxPlugin.GenerateSW({
     //PWA优化
     clientsClaim: true,
     skipWaiting: true
   }),
   new WebpackBar() // webpack打包进度条
-  // new FriendlyErrorsWebpackPlugin() // 能够更好在终端看到webapck运行的警告和错误
 ]
 
 const files = fs.readdirSync(path.resolve(__dirname, '../dll'))
@@ -154,7 +140,7 @@ const webpackConfigPro = {
   optimization: {
     runtimeChunk: { name: 'manifest' },
     minimizer: [
-      // css代码分割
+      // css代码分割与合并
       new OptimizeCSSAssetsPlugin({}),
       // 压缩JS
       new TerserPlugin({

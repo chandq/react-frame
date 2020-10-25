@@ -9,10 +9,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin') // 向dist文件中自�
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin') //将打包生产的dll.js文件自动引入html
 const fs = require('fs') //fs文件读取
-const WebpackBar = require('webpackbar') // webpack打包进度条
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin') // 能够更好在终端看到webapck运行的警告和错误
+const chalk = require('chalk')
+// const WebpackBar = require('webpackbar') // webpack打包进度条
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //想要分开打包我们的css文件，需要使用mini-css-extract-plugin这个插件，
+// const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
 
 // const HappyPack = require('happypack')
 // 创建一个 HappyThreadPool，作为所有 loader 共用的线程池(默认三个)
@@ -31,6 +32,7 @@ const plugins = [
   //   loaders: ['babel-loader?cacheDirectory'],
   //   threadPool: happyThreadPool
   // }),
+  // new CleanWebpackPlugin(), // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
   new HtmlWebpackPlugin({
     // 向dist文件中自动添加模版html,不生成dist目录
     template: 'public/index.html',
@@ -39,14 +41,16 @@ const plugins = [
   new webpack.DefinePlugin({
     'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL)
   }),
-  // new CleanWebpackPlugin(), // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
   // new webpack.NamedModulesPlugin(), //用于启动HMR时可以显示模块的相对路径
   new webpack.HotModuleReplacementPlugin(), // 开启模块热更新，热加载和模块热更新不同，热加载是整个页面刷新
   // new webpack.optimize.ModuleConcatenationPlugin(), // 运行 tree shaking 需要 ModuleConcatenationPlugin。
   //通过 mode: "production" 可以添加此插件。如果你是开发环境就需要手动添加
-  new WebpackBar(), // webpack打包进度条
-  // new FriendlyErrorsWebpackPlugin(), // 能够更好在终端看到webapck运行的警告和错误
-
+  // new WebpackBar(), // webpack打包进度条
+  // new ProgressBarPlugin({
+  //   format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+  //   clear: false
+  // }),
+  // new SpeedMeasurePlugin(),
   new MiniCssExtractPlugin({
     filename: 'main.css'
   })

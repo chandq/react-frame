@@ -39,18 +39,6 @@ const routes = [
         name: 'yunapp',
         component: lazy(() => import('../pages/Mydemo/Yunapp'))
         // component: Yunapp
-      },
-      {
-        path: '/home/mydemo/visual',
-        name: 'visual',
-        component: lazy(() => import('../pages/Mydemo/Visual'))
-        // component: Visual
-      },
-      {
-        path: '/home/mydemo/canvas',
-        name: 'canvas',
-        component: lazy(() => import('../pages/Mydemo/Canvas'))
-        // component: Canvas
       }
     ]
   }
