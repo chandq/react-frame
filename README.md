@@ -21,7 +21,7 @@
 - [x] 代码压缩(terser-webpack-plugin)
 - [x] 浏览器缓存
 - [x] tree shaking
-- [x] DellPlugin
+- [x] DllPlugin
 - [x] PWA
 - [x] eslint
 - [x] 路由懒加载
