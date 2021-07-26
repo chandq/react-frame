@@ -58,7 +58,10 @@ app.listen(port, err => {
     complier.hooks.done.tap('DonePlugin', () => {
       console.info(chalk.bold.yellow(`\n==> 🌍  Your application is running at: \n`))
       console.log(`- local: ${chalk.blue(`http://localhost:${port}/`)}`)
-      console.log(`- network: ${chalk.blue.underline(`http://${HOST}:${port}/`)}\n`)
+      HOST.forEach(h => {
+        console.log(`- network: ${chalk.blue.underline(`http://${h}:${port}/`)}`)
+      })
+      console.log('\n')
     })
   }
 })

@@ -27,6 +27,9 @@ app.listen(PORT, err => {
     console.log(`==> ⏳  Please wait Webpack Task completed...`)
     console.info(chalk.yellow(`\n==> 🌍  Your application is running at: \n`))
     console.log(`- local: ${chalk.blue(`http://localhost:${PORT}/`)}`)
-    console.log(`- network: ${chalk.blue.underline(`http://${HOST}:${PORT}/`)}\n`)
+    HOST.forEach(h => {
+      console.log(`- network: ${chalk.blue.underline(`http://${h}:${PORT}/`)}`)
+    })
+    console.log('\n')
   }
 })
