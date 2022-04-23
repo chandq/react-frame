@@ -326,7 +326,7 @@ export function browserCore() {
   }
 }
 
-export const formateDate = (dateObj = new Date(), seprator = '/') => {
+export const formatDate = (dateObj = new Date(), seprator = '/') => {
   const year = dateObj.getFullYear()
   const month = dateObj.getMonth() + 1
   const day = dateObj.getDate()
@@ -334,4 +334,33 @@ export const formateDate = (dateObj = new Date(), seprator = '/') => {
   return `${year + seprator + (month > 9 ? month : `0${month}`) + seprator + (day > 9 ? day : `0${day}`)} ${
     ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'][week]
   }`
+}
+
+/**
+ * @description: 格式化时间日期
+ * @param {string} fmt 时间日期字符串格式化模板
+ * @param {date} date 时间日期Date
+ * @returns {string}
+ */
+ function dateFormat(fmt, date = new Date()) {
+  let ret;
+  const opt = {
+    'Y+': date.getFullYear().toString(), // 年
+    'm+': (date.getMonth() + 1).toString(), // 月
+    'd+': date.getDate().toString(), // 日
+    'H+': date.getHours().toString(), // 时
+    'M+': date.getMinutes().toString(), // 分
+    'S+': date.getSeconds().toString(), // 秒
+    'f+': date.getMilliseconds().toString(), // 毫秒
+    'w+': ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'][date.getDay()] // 毫秒
+    // 有其他格式化字符需求可以继续添加，必须转化成字符串
+  };
+  // eslint-disable-next-line guard-for-in
+  for (const k in opt) {
+    ret = new RegExp('(' + k + ')').exec(fmt);
+    if (ret) {
+      fmt = fmt.replace(ret[1], ret[1].length === 1 ? opt[k] : opt[k].padStart(ret[1].length, '0'));
+    }
+  }
+  return fmt;
 }
