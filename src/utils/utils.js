@@ -172,22 +172,33 @@ export function getDate(nextDays) {
     date.getSeconds()
   )
 }
+export function dataType(data) {
+  return Object.prototype.toString.call(data).slice(8, -1).toLowerCase()
+}
 /**
- * @description 移除对象内无效的键值对
+ * @description 递归移除数组或对象内无效数值的元素（undefined, null, ''）
  * @author chendq
  * @date 2020-03-11
  * @export
- * @param {*} obj
- * @returns Object
+ * @param {array|object} obj
+ * @returns {array|object}
  */
-export function removeInvalidVal(obj) {
-  let newObj = {}
-  for (let key in obj) {
-    if ((obj[key] instanceof Array && obj[key].length !== 0) || ![undefined, null, ''].includes(obj[key])) {
-      newObj[key] = obj[key]
+ export function removeInvalidVal(obj) {
+  let retObj = dataType(obj) === 'object' ? {} : [];
+  const delInvalidVal = function (newObj, obj) {
+    for (let key in obj) {
+      if (['object', 'array'].includes(dataType(obj[key]))) {
+        newObj[key] = dataType(obj[key]) === 'object' ? {} : [];
+        delInvalidVal(newObj[key], obj[key]);
+      } else {
+        if ((obj[key] instanceof Array && obj[key].length !== 0) || ![undefined, null, ''].includes(obj[key])) {
+          newObj[key] = obj[key];
+        }
+      }
     }
-  }
-  return newObj
+  };
+  delInvalidVal(retObj, obj);
+  return retObj;
 }
 /**
  * @description 防抖函数
