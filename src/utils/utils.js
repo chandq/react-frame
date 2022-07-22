@@ -1,4 +1,5 @@
 // import moment from 'moment'
+
 // 设置 html title
 export const setTitle = title => {
   document.title = title || 'Vue-App'
@@ -72,37 +73,12 @@ export const regExp = {
     return /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/
   }
 }
-
 /**
- * @desc judge data type
- * value of type : String,Number,Undefined,Null,Object,Array,RegExp,Function,Date,Error
- * @param data, type
+ * @description: 按链接下载函数
+ * @param {string} fileName
+ * @param {string} href
+ * @return {*}
  */
-// eslint-disable-next-line no-extend-native
-// Object.prototype.dataType = (data, type) => {
-//   return Object.prototype.toString.call(data) === `[object ${type}]`
-// }
-
-/* export const convertTime = {
-  getDateTime: function (dateTime) {
-    return moment(dateTime, 'YYYY-MM-DD HH:mm:ss')
-  },
-  getTime: function (dateTime) {
-    return moment(dateTime, 'HH:mm:ss')
-  },
-  parseDateTime: function (dateTime) {
-    return moment(dateTime).format('YYYY-MM-DD HH:mm:ss')
-  },
-  parseTime: function (dateTime) {
-    return moment(dateTime).format('HH:mm:ss')
-  },
-  getCustomTime: function (formatStr, dateTime) {
-    return moment(dateTime, formatStr)
-  },
-  parseCustomTime: function (formatStr, dateTime) {
-    return moment(dateTime).format(formatStr)
-  }
-} */
 export function downloadFileByLink(fileName, href) {
   const link = document.createElement('a')
   const tmpEle = document.body.appendChild(link)
@@ -111,25 +87,33 @@ export function downloadFileByLink(fileName, href) {
   link.click()
   tmpEle.remove()
 }
+/**
+ * @description: 流下载函数
+ * @param {string} method
+ * @param {string} url
+ * @param {string} data
+ * @param {*} fileName
+ * @return {*}
+ */
 export function downloadByStream({ method = 'GET', url, data = {}, fileName = '文件.xlsx' }) {
-  const req = new XMLHttpRequest();
-  req.open(method, url, true);
-  req.responseType = 'blob';
-  req.setRequestHeader('Content-Type', 'application/json');
-  req.onload = function() {
-    const data = req.response;
-    const blob = new Blob([data]);
-    const blobUrl = window.URL.createObjectURL(blob);
-    download(blobUrl, fileName);
-  };
-  req.send(JSON.stringify(data));
+  const req = new XMLHttpRequest()
+  req.open(method, url, true)
+  req.responseType = 'blob'
+  req.setRequestHeader('Content-Type', 'application/json')
+  req.onload = function () {
+    const data = req.response
+    const blob = new Blob([data])
+    const blobUrl = window.URL.createObjectURL(blob)
+    download(blobUrl, fileName)
+  }
+  req.send(JSON.stringify(data))
 }
 
 function download(blobUrl, fileName) {
-  const a = document.createElement('a');
-  a.download = fileName;
-  a.href = blobUrl;
-  a.click();
+  const a = document.createElement('a')
+  a.download = fileName
+  a.href = blobUrl
+  a.click()
 }
 /**
  * @desc 根据当前往后推算的天数获得具体的日期时间 YYYY-MM-DD HH:mm:ss
@@ -172,9 +156,15 @@ export function getDate(nextDays) {
     date.getSeconds()
   )
 }
+/**
+ * @description: 判断数据类型的万能函数
+ * @param {*} data
+ * @return {string}
+ */
 export function dataType(data) {
   return Object.prototype.toString.call(data).slice(8, -1).toLowerCase()
 }
+
 /**
  * @description 递归移除数组或对象内无效数值的元素（undefined, null, ''）
  * @author chendq
@@ -183,23 +173,24 @@ export function dataType(data) {
  * @param {array|object} obj
  * @returns {array|object}
  */
- export function removeInvalidVal(obj) {
-  let retObj = dataType(obj) === 'object' ? {} : [];
+export function removeInvalidVal(obj) {
+  let retObj = dataType(obj) === 'object' ? {} : []
   const delInvalidVal = function (newObj, obj) {
     for (let key in obj) {
       if (['object', 'array'].includes(dataType(obj[key]))) {
-        newObj[key] = dataType(obj[key]) === 'object' ? {} : [];
-        delInvalidVal(newObj[key], obj[key]);
+        newObj[key] = dataType(obj[key]) === 'object' ? {} : []
+        delInvalidVal(newObj[key], obj[key])
       } else {
         if ((obj[key] instanceof Array && obj[key].length !== 0) || ![undefined, null, ''].includes(obj[key])) {
-          newObj[key] = obj[key];
+          newObj[key] = obj[key]
         }
       }
     }
-  };
-  delInvalidVal(retObj, obj);
-  return retObj;
+  }
+  delInvalidVal(retObj, obj)
+  return retObj
 }
+
 /**
  * @description 防抖函数
  * 应用场景：
@@ -337,24 +328,14 @@ export function browserCore() {
   }
 }
 
-export const formatDate = (dateObj = new Date(), seprator = '/') => {
-  const year = dateObj.getFullYear()
-  const month = dateObj.getMonth() + 1
-  const day = dateObj.getDate()
-  const week = dateObj.getDay()
-  return `${year + seprator + (month > 9 ? month : `0${month}`) + seprator + (day > 9 ? day : `0${day}`)} ${
-    ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'][week]
-  }`
-}
-
 /**
  * @description: 格式化时间日期
  * @param {string} fmt 时间日期字符串格式化模板
  * @param {date} date 时间日期Date
  * @returns {string}
  */
- function dateFormat(fmt, date = new Date()) {
-  let ret;
+export function dateFormat(date = new Date(), fmt = 'YYYY-mm-dd') {
+  let ret
   const opt = {
     'Y+': date.getFullYear().toString(), // 年
     'm+': (date.getMonth() + 1).toString(), // 月
@@ -365,13 +346,104 @@ export const formatDate = (dateObj = new Date(), seprator = '/') => {
     'f+': date.getMilliseconds().toString(), // 毫秒
     'w+': ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'][date.getDay()] // 毫秒
     // 有其他格式化字符需求可以继续添加，必须转化成字符串
-  };
+  }
   // eslint-disable-next-line guard-for-in
   for (const k in opt) {
-    ret = new RegExp('(' + k + ')').exec(fmt);
+    ret = new RegExp('(' + k + ')').exec(fmt)
     if (ret) {
-      fmt = fmt.replace(ret[1], ret[1].length === 1 ? opt[k] : opt[k].padStart(ret[1].length, '0'));
+      fmt = fmt.replace(ret[1], ret[1].length === 1 ? opt[k] : opt[k].padStart(ret[1].length, '0'))
     }
   }
-  return fmt;
+  return fmt
+}
+
+/**
+ * 计算日期
+ * @param n 正数：向后推算；负数：向前推算
+ * @returns {String}
+ */
+export function getBeforeDate(strDate, n) {
+  //strDate 为字符串日期 如:'2019-01-01' n为你要传入的参数，当前为0，前一天为-1，后一天为1
+  var datt = strDate.split('-') //这边给定一个特定时间
+  var newDate = new Date(datt[0], datt[1] - 1, datt[2])
+  var befminuts = newDate.getTime() + 1000 * 60 * 60 * 24 * parseInt(n) //计算前几天用减，计算后几天用加，最后一个就是多少天的数量
+  var beforeDat = new Date()
+  beforeDat.setTime(befminuts)
+  var befMonth = beforeDat.getMonth() + 1
+  var mon = befMonth >= 10 ? befMonth : '0' + befMonth
+  var befDate = beforeDat.getDate()
+  var da = befDate >= 10 ? befDate : '0' + befDate
+  var finalNewDate = beforeDat.getFullYear() + '-' + mon + '-' + da
+  return finalNewDate
+}
+
+/**
+ * @description: 将数字格式化成千位分隔符显示的字符串
+ * @param {number} val
+ * @param {string} type 展示分段显示的类型 int:整型 | float:浮点型
+ * @return {string}
+ */
+export function formatNumber(val, type = 'int') {
+  return type === 'int' ? parseInt(val).toLocaleString() : Number(val).toLocaleString('en-US')
+}
+
+/**
+ * 选择本地文件
+ * @param {function} changeCb 选择文件回调
+ * @return {*}
+ */
+export function chooseLocalFile({ accept }, changeCb) {
+  var inputObj = document.createElement('input')
+  inputObj.setAttribute('id', String(Date.now()))
+  inputObj.setAttribute('type', 'file')
+  inputObj.setAttribute('style', 'visibility:hidden')
+  inputObj.setAttribute('accept', accept)
+  document.body.appendChild(inputObj)
+  inputObj.click()
+  inputObj.onchange = e => {
+    changeCb(e.target.files)
+  }
+  return inputObj
+}
+
+/**
+ * @description: 自定义深度优先遍历函数(支持continue和break操作)
+ * @param {array} deepList
+ * @param {function} iterator
+ * @param {array} children
+ * @param {boolean} isReverse 是否反向遍历
+ * @return {*}
+ */
+export const deepTraversal = (deepList, iterator, children = 'children', isReverse = false) => {
+  let level = 0
+  const walk = (arr, parent) => {
+    if (isReverse) {
+      for (let i = arr.length - 1; i >= 0; i--) {
+        const re = iterator(arr[i], i, deepList, parent, level)
+        if (re === 'break') {
+          break
+        } else if (re === 'continue') {
+          continue
+        }
+        if (Array.isArray(arr[i][children])) {
+          ++level
+          walk(arr[i][children], arr[i])
+        }
+      }
+    } else {
+      for (let i = 0; i < arr.length; i++) {
+        const re = iterator(arr[i], i, deepList, parent, level)
+        if (re === 'break') {
+          break
+        } else if (re === 'continue') {
+          continue
+        }
+        if (Array.isArray(arr[i][children])) {
+          ++level
+          walk(arr[i][children], arr[i])
+        }
+      }
+    }
+  }
+  walk(deepList, null)
 }
