@@ -1,6 +1,6 @@
-## red-bridge
+## react-frame
 
-> 基于 react + react-router + dva + axios + antd + es6 + less 的脚手架
+> 基于 webpack 5.x + react v18 + react-router + dva + axios + antd 4.x + es6 + less 的脚手架
 
 ### 项目介绍
 

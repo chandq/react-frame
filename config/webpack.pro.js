@@ -14,6 +14,7 @@ const WorkboxPlugin = require('workbox-webpack-plugin') //PWA全称progressive W
 //运行命令打包后会多出两个文件precache-manifest.js和service-worker.js, service-worker这个文件就可以让我们的页面被缓存住
 //关于PWA介绍https://lavas.baidu.com/pwa/README
 const WebpackBar = require('webpackbar') // webpack打包进度条
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin') // 能够更好在终端看到webapck运行的警告和错误
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //想要分开打包我们的css文件，需要使用mini-css-extract-plugin这个插件，
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
@@ -72,7 +73,8 @@ let plugins = [
     clientsClaim: true,
     skipWaiting: true
   }),
-  new WebpackBar() // webpack打包进度条
+  new WebpackBar(), // webpack打包进度条
+  new FriendlyErrorsWebpackPlugin() // 能够更好在终端看到webapck运行的警告和错误
 ]
 
 const files = fs.readdirSync(path.resolve(__dirname, '../dll'))
@@ -101,7 +103,7 @@ files.forEach(file => {
   }
 })
 
-if (process.env.NODE_ENV === 'ana') {
+if (process.env.ANA === 'ana') {
   plugins.push(new BundleAnalyzerPlugin())
 }
 
@@ -168,6 +170,7 @@ const webpackConfigPro = {
       //代码分割SplitChunksPlugin配置
       chunks: 'all', // 只对异步引入代码起作用，设置all时并同时配置vendors才对两者起作用
       minSize: { javascript: 30000, style: 50000 }, // 引入的库大于30kb时才会做代码分割
+      maxSize: { javascript: 1500000, style: 100000 },
       minChunks: 1, // 一个模块至少被用了1次才会被分割
       maxAsyncRequests: 6, // 同时异步加载的模块数最多是5个，如果超过5个则不做代码分割
       maxInitialRequests: 3, // 入口文件进行加载时，引入的库最多分割出3个js文件

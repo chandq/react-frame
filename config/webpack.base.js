@@ -1,7 +1,7 @@
 const path = require('path')
 module.exports = {
   resolve: {
-    extensions: ['.js', '.jsx', '.less', '.css'], // 当通过import child from './child/child'形式引入文件时，会先去寻找.js为后缀当文件，再去寻找.jsx为后缀的文件
+    extensions: ['.js', '.jsx', '.less', '.scss', '.css'], // 当通过import child from './child/child'形式引入文件时，会先去寻找.js为后缀当文件，再去寻找.jsx为后缀的文件
     mainFiles: ['index', 'view'], // 如果是直接引用一个文件夹，那么回去直接找index开头的文件，如果不存在再去找view开头的文件
     alias: {
       // 配置别名可以加快webpack查找模块的速度
@@ -18,8 +18,15 @@ module.exports = {
       {
         /**js的配置 */
         test: /\.(js|jsx)$/, // 注意这里要写正确，不然useBuiltIns不起作用,useBuiltIns被抽离在.babelrc文件
-        include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围,
+        include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围
         exclude: /node_modules/, // 排除node_modules中的代码module: {
+        //   rules: [
+        //     {
+        //       test: /\.css$/, //寻找css文件HtmlWebpackPlugin
+        //       use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] //使用MiniCssExtractPlugin.loader,css-loader,postcss-loader
+        //     }
+        //   ]
+        // },
         use: [
           {
             loader: 'babel-loader', // 只是babel和webpack之间的桥梁，并不会将代码转译
@@ -45,7 +52,9 @@ module.exports = {
           {
             loader: 'postcss-loader'
           },
-          { loader: 'less-loader' }
+          {
+            loader: 'less-loader'
+          }
         ]
         // use: [
         //   MiniCssExtractPlugin.loader /**注意:webpack loader的执行顺序是从右到左

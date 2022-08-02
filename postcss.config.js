@@ -3,6 +3,8 @@ module.exports = {
   plugins: [
     require('autoprefixer')({
       overrideBrowserslist: [
+        'Android 4.1',
+        'iOS 7.1',
         'last 2 versions',
         '> 1%',
         'chrome >= 5',
@@ -12,9 +14,10 @@ module.exports = {
         'safari >= 5'
       ]
     }),
-    require('postcss-px2rem-exclude')({
-      remUnit: 100, // 基准大小 baseSize，需要和setrem.js中相同
-      remPrecision: 3, // rem的小数点后位数
+    require('postcss-pxtorem')({
+      rootValue: 96, // 基准大小 baseSize，需要和setrem.js中相同
+      propList: ['*'],
+      unitPrecision: 3, // rem的小数点后位数
       exclude: /node_modules/i
     })
   ]
