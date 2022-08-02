@@ -23,3 +23,13 @@
 #root {
   height: 100%;
 }
+
+.ant-menu-dark .ant-menu-item,
+.ant-menu-dark .ant-menu-item-group-title,
+.ant-menu-dark .ant-menu-item > a,
+.ant-menu-dark .ant-menu-item a {
+  color: hsla(0, 0%, 100%, 0.65);
+}
+.ant-menu-item-selected a {
+  color: #fff;
+}

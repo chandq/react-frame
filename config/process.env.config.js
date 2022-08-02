@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/redbridge/'
+  publicPath: '/react-demo/'
 }
