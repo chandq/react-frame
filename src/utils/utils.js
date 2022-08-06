@@ -1,8 +1,14 @@
-// import moment from 'moment'
-
 // 设置 html title
 export const setTitle = title => {
   document.title = title || 'Vue-App'
+}
+/**
+ * @description: 判断数据类型的万能函数
+ * @param {*} data
+ * @return {string}
+ */
+export function dataType(data) {
+  return Object.prototype.toString.call(data).slice(8, -1).toLowerCase()
 }
 // 获取 url Pathname
 export const getPathname = url => {
@@ -46,11 +52,41 @@ export function getQueryValue(name, search) {
   }
   return decodeURIComponent(result[1])
 }
+/**
+ * @description: 解析URL查询参数为普通对象
+ * @param {string} searchStr
+ * @return {object}
+ * 正则表达式参考资料：https://segmentfault.com/a/1190000023733064
+ */
+export function parseUrlParams(searchStr = location.search) {
+  const queryObj = {}
+  Array.from(searchStr.matchAll(/[&?]?([^=&]+)=?([^=&]*)/g)).forEach((item, i) => {
+    if (!queryObj[item[1]]) {
+      queryObj[item[1]] = item[2]
+    } else if (typeof queryObj[item[1]] === 'string') {
+      queryObj[item[1]] = [queryObj[item[1]], item[2]]
+    } else {
+      queryObj[item[1]].push(item[2])
+    }
+  })
+  return queryObj
+}
+/**
+ * @description: 请求url和查询参数对象转换为完整的请求URL
+ * @param {string} url 请求url
+ * @param {object} params 请求查询参数
+ * @return {string}
+ */
 export function forGetParams(url, params) {
   const paramsString = getString(params)
   return paramsString ? url + '?' + paramsString : url
 }
 
+/**
+ * @description: 将Query对象转换为Query string
+ * @param {object} obj
+ * @return {string}
+ */
 export function getString(obj) {
   let str = []
   let index = 0
@@ -155,14 +191,6 @@ export function getDate(nextDays) {
     separator2 +
     date.getSeconds()
   )
-}
-/**
- * @description: 判断数据类型的万能函数
- * @param {*} data
- * @return {string}
- */
-export function dataType(data) {
-  return Object.prototype.toString.call(data).slice(8, -1).toLowerCase()
 }
 
 /**
