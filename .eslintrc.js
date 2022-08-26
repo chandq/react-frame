@@ -13,7 +13,7 @@ module.exports = {
     'no-async-promise-executor': 0,
     indent: 'off',
     'no-useless-escape': 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'warn',
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'prefer-destructuring': [
       'error',
@@ -62,7 +62,7 @@ module.exports = {
     'line-comment-position': 'off',
     'no-extra-semi': 'off'
   },
-  parser: 'babel-eslint', // parser指定解析器，默认的为espree。babel-eslint是一个Babel parser的包装器，这个包装器使得 Babel parser 可以和 ESLint 协调工作
+  parser: '@babel/eslint-parser', // parser指定解析器，默认的为espree。babel-eslint是一个Babel parser的包装器，这个包装器使得 Babel parser 可以和 ESLint 协调工作
   parserOptions: {
     sourceType: 'module', // 设置为 "script" (默认) 或 "module"（ES6)。
     ecmaFeatures: {

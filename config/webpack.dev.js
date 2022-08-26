@@ -30,7 +30,7 @@ const plugins = [
   //   loaders: ['babel-loader?cacheDirectory'],
   //   threadPool: happyThreadPool
   // }),
-  new CleanWebpackPlugin(), // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
+  new CleanWebpackPlugin(), // 打包前先清除上一次dist文件，先于HtmlWebpackPlugin运行
   new HtmlWebpackPlugin({
     // 向dist文件中自动添加模版html,不生成dist目录
     // filename: 'index.html',
