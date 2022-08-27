@@ -31,6 +31,7 @@ let plugins = [
     favicon: 'public/favicon.ico'
   }),
   new MiniCssExtractPlugin({
+    ignoreOrder: true,
     filename: 'static/css/[name].css',
     chunkFilename: 'static/css/[name].chunk.css'
   }),

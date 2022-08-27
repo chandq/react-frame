@@ -6,7 +6,6 @@ import Page404 from '../pages/404'
 import Login from '../layout/Login'
 const Home = lazy(() => import(/* webpackChunkName: "home-vendor" */ '../layout/Index'))
 import Homepage from '../pages/Home'
-import Yunapp from '../pages/Mydemo/Yunapp'
 import Visual from '../pages/Mydemo/Visual'
 
 const { ConnectedRouter } = routerRedux
@@ -30,7 +29,6 @@ export default function Router({ history }) {
               return (
                 <Home>
                   <Route key={'portal'} exact path={getRoutePath('/home/portal')} component={Homepage} />
-                  <Route key={'yunapp'} exact path={getRoutePath('/home/mydemo/yunapp')} component={Yunapp} />
                   <Route key={'visual'} exact path={getRoutePath('/home/mydemo/visual')} component={Visual} />
                 </Home>
               )

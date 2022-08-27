@@ -12,8 +12,7 @@ module.exports = {
         id: 2,
         name: 'demo示例',
         href: '/home/mydemo',
-        icon: 'BarChartOutlined',
-        children: [{ id: 22, name: '云景', href: '/home/mydemo/yunapp' }]
+        icon: 'BarChartOutlined'
       },
       { id: 3, name: '404', href: '/home/portal2', icon: '' }
     ],
