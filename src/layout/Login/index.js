@@ -5,7 +5,6 @@ import { Input, Button, Checkbox } from 'antd'
 import { Form } from '@ant-design/compatible'
 import bgimg from '@/assets/images/login-bg.jpg'
 import './index.less'
-import { bool } from 'prop-types'
 
 @connect(state => ({ login: state.login })) //connect装饰器，等同于redux中的connect方法,接收的是全局state,需通过namespace解构
 @Form.create() //Form.create()装饰器 等同于用Form.create({})(Login)，经 Form.create() 包装过的组件会自带 this.props.form 属性

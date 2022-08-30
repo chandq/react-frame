@@ -5,62 +5,14 @@ module.exports = {
     amd: true,
     browser: true,
     commonjs: true,
-    node: true
+    node: true,
+    jest: true
   },
-  extends: ['eslint:recommended'],
+  extends: ['eslint:recommended', 'react-app'],
   rules: {
-    'space-before-function-paren': 0,
-    'no-async-promise-executor': 0,
-    indent: 'off',
-    'no-useless-escape': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
-    'prefer-destructuring': [
-      'error',
-      {
-        object: true,
-        array: false
-      },
-      {
-        enforceForRenamedProperties: false
-      }
-    ],
-    // 'brace-style': ['error', 'stroustrup'],
-    'object-curly-spacing': 'off',
-    'max-len': [
-      'error',
-      {
-        code: 120,
-        tabWidth: 2,
-        ignoreComments: true,
-        ignoreUrls: true,
-        ignoreRegExpLiterals: true,
-        ignoreStrings: true,
-        ignoreTemplateLiterals: true
-      }
-    ],
-    'comma-dangle': ['error', 'never'],
-    'no-unused-expressions': [
-      'error',
-      {
-        allowShortCircuit: true,
-        allowTernary: true,
-        allowTaggedTemplates: true
-      }
-    ],
-    'react/jsx-filename-extension': [
-      'error',
-      {
-        extensions: ['.js', '.jsx']
-      }
-    ],
-    'react/require-default-props': 'off',
-    'react/forbid-prop-types': 'off',
-    'jsx-a11y/click-events-have-key-events': 'off',
-    'jsx-a11y/no-static-element-interactions': 'off',
-    'no-unused-vars': 'off',
-    'line-comment-position': 'off',
-    'no-extra-semi': 'off'
+    'no-unused-vars': 'warn'
   },
   parser: '@babel/eslint-parser', // parser指定解析器，默认的为espree。babel-eslint是一个Babel parser的包装器，这个包装器使得 Babel parser 可以和 ESLint 协调工作
   parserOptions: {
