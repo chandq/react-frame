@@ -2,7 +2,7 @@ let express = require('express') //引入express
 let fs = require('fs')
 let path = require('path')
 const chalk = require('chalk')
-const { getAvailAblePort } = require('../config/utils')
+const portfinder = require('portfinder')
 
 let app = express() //实例化express
 const crossDomain = () => (req, res, next) => {
@@ -63,17 +63,12 @@ parseMockFiles()
 //     })
 //   )
 // })
-
-let port = 8090
-var done = false
-getAvailAblePort(port, function cb(res) {
-  port = res
-  done = true
-})
-// 将异步函数转换为同步代码代码执行
-require('deasync').loopWhile(function () {
-  return !done
-})
-app.listen(port, () => {
-  console.info(chalk.rgb(10, 100, 200)(`\n==> 🌍  Mock Server is running on port ${8090} \n`))
+portfinder.basePort = 8090
+portfinder.getPort(function (err, port) {
+  if (err) {
+    throw err
+  }
+  app.listen(port, () => {
+    console.info(chalk.rgb(10, 100, 200)(`\n==> 🌍  Mock Server is running on port ${8090} \n`))
+  })
 })

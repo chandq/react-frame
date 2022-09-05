@@ -11,7 +11,7 @@ const ConnectHistoryApiFallback = require('connect-history-api-fallback')
 const config = require('./webpack.dev.js')
 const utils = require('./utils')
 const chalk = require('chalk')
-const { getAvailAblePort } = require('./utils')
+const portfinder = require('portfinder')
 // const open = require('open')
 
 const compiler = webpack(config) // 编译器，编译器执行一次就会重新打包一下代码
@@ -49,31 +49,30 @@ app.use(hotMiddleware)
 app.use(express.static(DIST_DIR))
 const HOST = utils.getIPAdress()
 
-let port = 8080
-var done = false
-getAvailAblePort(port, function cb(res) {
-  port = res
-  done = true
-})
-// 将异步函数转换为同步代码代码执行
-require('deasync').loopWhile(function () {
-  return !done
-})
-
-const server = app.listen(port, err => {
-  //监听端口
+portfinder.basePort = 8080
+portfinder.getPort(function (err, port) {
   if (err) {
-    console.error(err)
-  } else {
-    console.log(`==> ⏳  Please wait Webpack Task completed...`)
-
-    // var host = server.address().address
-    // var port1 = server.address().port
-    // console.log('地址为 http://%s:%s', host, port1)
-    compiler.hooks.done.tap('DonePlugin', () => {
-      console.info(chalk.bold.yellow(`\n==> 🌍  Your application is running at: \n`))
-      console.log(`- local: ${chalk.blue(`http://localhost:${port}/`)}`)
-      console.log(`- network: ${chalk.blue.underline(`http://${HOST}:${port}/`)}\n`)
-    })
+    throw err
   }
+  listen(port)
 })
+
+function listen(port) {
+  app.listen(port, err => {
+    //监听端口
+    if (err) {
+      console.error(err)
+    } else {
+      console.log(`==> ⏳  Please wait Webpack Task completed...`)
+
+      // var host = server.address().address
+      // var port1 = server.address().port
+      // console.log('地址为 http://%s:%s', host, port1)
+      compiler.hooks.done.tap('DonePlugin', () => {
+        console.info(chalk.bold.yellow(`\n==> 🌍  Your application is running at: \n`))
+        console.log(`- local: http://localhost:${chalk.yellow(port)}/`)
+        console.log(`- network: http://${HOST}:${chalk.yellow(port)}/\n`)
+      })
+    }
+  })
+}
