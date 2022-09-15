@@ -442,7 +442,7 @@ export function chooseLocalFile({ accept }, changeCb) {
  * @param {boolean} isReverse 是否反向遍历
  * @return {*}
  */
-export const deepTraversal = (deepList, iterator, children = 'children', isReverse = false) => {
+export function deepTraversal (deepList, iterator, children = 'children', isReverse = false) => {
   let level = 0
   const walk = (arr, parent) => {
     if (isReverse) {
@@ -475,3 +475,62 @@ export const deepTraversal = (deepList, iterator, children = 'children', isRever
   }
   walk(deepList, null)
 }
+/**
+ * 深拷贝堪称完全体 即：任何类型的数据都会被深拷贝
+ * @param {object|array} obj
+ * @param {WeakMap} map
+ * @return {object|array}
+ */
+export const deepClone = (obj, map = new WeakMap()) => {
+  if (obj instanceof Date) return new Date(obj)
+  if (obj instanceof RegExp) return new RegExp(obj)
+
+  if (map.has(obj)) {
+    return map.get(obj)
+  }
+
+  const allDesc = Object.getOwnPropertyDescriptors(obj)
+  const cloneObj = Object.create(Object.getPrototypeOf(obj), allDesc)
+
+  map.set(obj, cloneObj)
+
+  for (const key of Reflect.ownKeys(obj)) {
+    const value = obj[key]
+
+    cloneObj[key] = value instanceof Object && typeof value !== 'function' ? deepClone(value, map) : value
+  }
+  return cloneObj
+}
+/**
+ * 在树中找到 id 为某个值的节点，并返回上游的所有父级节点
+ * @param {array} tree
+ * @param {string} nodeId
+ * @param {object} config
+ * @return {array}
+ */
+export const getTreeIds = (tree, nodeId, config) => {
+  const { children = 'children', id = 'id' } = config || {};
+  const toFlatArray = (tree, parentId, parent) => {
+    return tree.reduce((t, _) => {
+      const child = _[children];
+      return [
+        ...t,
+        parentId ? { ..._, parentId, parent } : _,
+        ...(child && child.length ? toFlatArray(child, _[id], _) : [])
+      ];
+    }, []);
+  };
+  const getIds = flatArray => {
+    let child = flatArray.find(_ => _[id] === nodeId);
+    const { parent, parentId, ...other } = child;
+    let ids = [nodeId],
+      nodes = [other];
+    while (child && child.parentId) {
+      ids = [child.parentId, ...ids];
+      nodes = [child.parent, ...nodes];
+      child = flatArray.find(_ => _[id] === child.parentId);
+    }
+    return [ids, nodes];
+  };
+  return getIds(toFlatArray(tree));
+};
