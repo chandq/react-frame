@@ -24,7 +24,7 @@ export default {
         //   })
         //   return navMenus
         // }
-        yield put({ type: 'redgetNavLeft', payload: data.data })
+        yield put({ type: 'redgetNavLeft', payload: data })
       } catch (e) {
         console.log(e.message)
       }
