@@ -6,7 +6,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin') // 向dist文件中自动添加模版html,不生成dist目录
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
-//但是这个插件目前还不支持HMR,为了不影响开发效率，因此就在生成环境下使用该插件
+//但是这个插件目前还不支持HMR,为了不影响开发效率，因此就在生产环境下使用该插件
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //这个插件可以帮助我们把相同的样式合并。
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin') //将打包生产的dll.js文件自动引入html
 const fs = require('fs') //fs文件读取
@@ -32,8 +32,8 @@ let plugins = [
   }),
   new MiniCssExtractPlugin({
     ignoreOrder: true,
-    filename: 'static/css/[name].css',
-    chunkFilename: 'static/css/[name].chunk.css'
+    filename: 'static/css/[name].[hash:5].css',
+    chunkFilename: 'static/css/[name].[hash:5].css'
   }),
   new PreloadWebpackPlugin({
     rel: 'preload',
@@ -137,6 +137,27 @@ const webpackConfigPro = {
       {
         test: /\.css$/, //寻找css文件
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] //使用MiniCssExtractPlugin.loader,css-loader,postcss-loader
+      },
+      {
+        /**less的配置 */
+        test: /\.less$/, //寻找less文件
+        exclude: /node_modules/, //忽略
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: { localIdentName: '[local]___[hash:base64:5]' },
+              importLoaders: 2
+            }
+          },
+          {
+            loader: 'postcss-loader'
+          },
+          {
+            loader: 'less-loader'
+          }
+        ]
       }
     ]
   },
@@ -151,9 +172,7 @@ const webpackConfigPro = {
         parallel: true,
         // sourceMap: false,
         terserOptions: {
-          warnings: false,
           compress: {
-            warnings: false,
             // 是否注释掉console
             drop_console: true,
             dead_code: true,
@@ -163,24 +182,32 @@ const webpackConfigPro = {
             comments: false
           }
         },
-        extractComments: false
+        extractComments: false //是否将注释剥离到单独的文件中
         // 等等详细配置见官网
       })
     ],
     splitChunks: {
       //代码分割SplitChunksPlugin配置
-      chunks: 'all', // 只对异步引入代码起作用，设置all时并同时配置vendors才对两者起作用
+      // chunks: 'all', // 只对异步引入代码起作用，设置all时并同时配置vendors才对两者起作用
       minSize: { javascript: 30000, style: 50000 }, // 引入的库大于30kb时才会做代码分割
       maxSize: { javascript: 1500000, style: 100000 },
       minChunks: 1, // 一个模块至少被用了1次才会被分割
-      maxAsyncRequests: 6, // 同时异步加载的模块数最多是5个，如果超过5个则不做代码分割
-      maxInitialRequests: 3, // 入口文件进行加载时，引入的库最多分割出3个js文件
+      maxAsyncRequests: 30, // 同时异步加载的模块数最多是5个，如果超过5个则不做代码分割
+      maxInitialRequests: 30, // 入口文件进行加载时，引入的库最多分割出3个js文件
       automaticNameDelimiter: '~', // 生成文件名的文件链接符
-      name: 'cdq', // 开启自定义名称效果
+      // name: 'cdq', // 开启自定义名称效果
       cacheGroups: {
-        defaultVendors: {
+        vendors: {
           name: 'vendors',
-          priority: -10
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          reuseExistingChunk: true
+        },
+        default: {
+          name: 'chunks',
+          chunks: 'all',
+          priority: -20,
+          reuseExistingChunk: true
         }
       }
     }

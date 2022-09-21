@@ -11,7 +11,7 @@ const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin') //将
 const fs = require('fs') //fs文件读取
 const WebpackBar = require('webpackbar') // webpack打包进度条
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin') //想要分开打包我们的css文件，需要使用mini-css-extract-plugin这个插件，
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin') //想要分开打包我们的css文件，需要使用mini-css-extract-plugin这个插件，
 
 // const HappyPack = require('happypack')
 // 创建一个 HappyThreadPool，作为所有 loader 共用的线程池(默认三个)
@@ -46,12 +46,7 @@ const plugins = [
   // new webpack.optimize.ModuleConcatenationPlugin(), // 运行 tree shaking 需要 ModuleConcatenationPlugin。
   //通过 mode: "production" 可以添加此插件。如果你是开发环境就需要手动添加
   // new webpack.ProgressPlugin(),
-  new WebpackBar(), // webpack打包进度条
-
-  new MiniCssExtractPlugin({
-    ignoreOrder: true,
-    filename: 'main.css'
-  })
+  new WebpackBar() // webpack打包进度条
 ]
 
 const files = fs.readdirSync(path.resolve(__dirname, '../dll'))
@@ -96,8 +91,36 @@ const webpackConfigDev = {
     rules: [
       {
         test: /\.css$/, //寻找css文件
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
-        //use: ['style-loader', 'css-loader', 'postcss-loader'] //不提取时使用这种方式
+        // use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+        use: ['style-loader', 'css-loader', 'postcss-loader'] //不提取时使用这种方式
+      },
+      {
+        /**less的配置 */
+        test: /\.less$/, //寻找less文件
+        exclude: /node_modules/, //忽略
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: { localIdentName: '[local]___[hash:base64:5]' },
+              importLoaders: 2,
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       }
     ]
   },

@@ -20,13 +20,6 @@ module.exports = {
         test: /\.(js|jsx)$/, // 注意这里要写正确，不然useBuiltIns不起作用,useBuiltIns被抽离在.babelrc文件
         include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围
         exclude: /node_modules/, // 排除node_modules中的代码module: {
-        //   rules: [
-        //     {
-        //       test: /\.css$/, //寻找css文件HtmlWebpackPlugin
-        //       use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] //使用MiniCssExtractPlugin.loader,css-loader,postcss-loader
-        //     }
-        //   ]
-        // },
         use: [
           {
             loader: 'babel-loader', // 只是babel和webpack之间的桥梁，并不会将代码转译
@@ -37,62 +30,53 @@ module.exports = {
         ]
       },
       {
-        /**less的配置 */
-        test: /\.less$/, //寻找less文件
-        exclude: /node_modules/, //忽略
+        /**图标和图片的处理的配置 */
+        test: /\.(png|jpe?g|svg|gif|webp)$/i,
+        include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围
         use: [
-          { loader: 'style-loader' },
           {
-            loader: 'css-loader',
+            loader: 'url-loader',
             options: {
-              modules: { localIdentName: '[local]___[hash:base64:5]' },
-              importLoaders: 2
+              name: '[name].[hash:8].[ext]', // placeholder 占位符
+              outputPath: 'assets/', // 打包文件名
+              limit: 1024 * 5, // 小于5KB则打包到js文件里，大于则使用file-loader的打包方式打包到assets里
+              esModule: false // 支持img标签使用require动态指定图片
             }
           },
           {
-            loader: 'postcss-loader'
-          },
-          {
-            loader: 'less-loader'
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              },
+              // optipng.enabled: false will disable optipng
+              optipng: {
+                enabled: false
+              },
+              pngquant: {
+                quality: [0.65, 0.9],
+                speed: 4
+              },
+              gifsicle: {
+                interlaced: false
+              },
+              // the webp option will enable WEBP
+              webp: {
+                quality: 75
+              }
+            }
           }
         ]
-        // use: [
-        //   MiniCssExtractPlugin.loader /**注意:webpack loader的执行顺序是从右到左
-        //         // less-loader 编译less
-        //         //css-loader  编译css
-        //         //postcss-loader  提供自动添加厂商前缀的功能，但是需要配合autoprefixer插件来使用*/,
-        //   {
-        //     loader: 'css-loader',
-        //     options: {
-        //       importLoaders: 2
-        //     }
-        //   },
-        //   'less-loader',
-        //   'postcss-loader'
-        // ] //使用style-loader,css-loader,less-loader,postcss-loader
       },
-
+      /**字体的处理的配置 */
       {
-        /**图标和图片的处理的配置 */
-        test: /\.(png|jpg|gif|jpeg)$/,
+        test: /\.(eot|woff2?|ttf|otf)$/,
         include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围
         use: {
           loader: 'url-loader',
           options: {
-            name: '[name].[hash:8].[ext]', // placeholder 占位符
-            outputPath: 'assets/', // 打包文件名
-            limit: 20480, // 小于20kb则打包到js文件里，大于则使用file-loader的打包方式打包到assets里
-            esModule: false // 支持img标签使用require动态指定图片
-          }
-        }
-      },
-      {
-        test: /\.(eot|woff2?|ttf|svg)$/,
-        include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围
-        use: {
-          loader: 'url-loader',
-          options: {
-            name: '[name]-[hash:5].min.[ext]', // 和上面同理
+            name: '[name]-[hash:8].min.[ext]', // 和上面同理
             outputPath: 'fonts/',
             limit: 5000
           }
