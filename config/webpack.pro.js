@@ -164,8 +164,8 @@ const webpackConfigPro = {
   optimization: {
     runtimeChunk: { name: 'manifest' },
     minimizer: [
-      // css代码分割与合并
-      new OptimizeCSSAssetsPlugin({}),
+      // 压缩CSS
+      new OptimizeCSSAssetsPlugin(),
       // 压缩JS
       new TerserPlugin({
         // cache: true,
@@ -212,7 +212,7 @@ const webpackConfigPro = {
       }
     }
   },
-  plugins, //plugins被DellPlugin后
+  plugins, //plugins在DllReferencePlugin后
   output: {
     publicPath: process.env.PUBLIC_URL,
     filename: 'static/js/[name]-[contenthash:8].js', //打包后输出的文件名称 //entry对应的key值

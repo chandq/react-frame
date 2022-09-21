@@ -85,7 +85,7 @@ const webpackConfigDev = {
     main: ['webpack-hot-middleware/client?noInfo=true&reload=true', './src/index.js']
   },
 
-  plugins, //plugins被DellPlugin后
+  plugins, //plugins在DllPlugin后
 
   module: {
     rules: [

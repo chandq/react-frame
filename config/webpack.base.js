@@ -1,5 +1,14 @@
 const path = require('path')
 module.exports = {
+  // 提高dev/prod高达80%的编译速度
+  cache: {
+    // 将缓存类型设置为文件系统,默认是memory
+    type: 'filesystem',
+    buildDependencies: {
+      // 更改配置文件时，重新缓存
+      config: [__filename]
+    }
+  },
   resolve: {
     extensions: ['.js', '.jsx', '.less', '.scss', '.css'], // 当通过import child from './child/child'形式引入文件时，会先去寻找.js为后缀当文件，再去寻找.jsx为后缀的文件
     mainFiles: ['index', 'view'], // 如果是直接引用一个文件夹，那么回去直接找index开头的文件，如果不存在再去找view开头的文件
