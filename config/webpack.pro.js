@@ -4,7 +4,7 @@ const webpackConfigBase = require('./webpack.base')
 const env = require('./process.env.config')
 const path = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin') // 向dist文件中自动添加模版html,不生成dist目录
+const HtmlWebpackPlugin = require('html-webpack-plugin') // 向dist目录中自动添加模版html
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
 //但是这个插件目前还不支持HMR,为了不影响开发效率，因此就在生产环境下使用该插件
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //这个插件可以帮助我们把相同的样式合并。
@@ -26,14 +26,14 @@ let plugins = [
   new CleanWebpackPlugin(), // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
   //插件
   new HtmlWebpackPlugin({
-    // 向dist文件中自动添加模版html,不生成dist目录
+    // 向dist目录中自动添加模版html
     template: 'public/index.html',
     favicon: 'public/favicon.ico'
   }),
   new MiniCssExtractPlugin({
     ignoreOrder: true,
-    filename: 'static/css/[name].[hash:5].css',
-    chunkFilename: 'static/css/[name].[hash:5].css'
+    filename: 'static/css/[name].[contenthash:5].css',
+    chunkFilename: 'static/css/[name].[contenthash:5].css'
   }),
   new PreloadWebpackPlugin({
     rel: 'preload',
@@ -147,7 +147,7 @@ const webpackConfigPro = {
           {
             loader: 'css-loader',
             options: {
-              modules: { localIdentName: '[local]___[hash:base64:5]' },
+              modules: { localIdentName: '[local]___[contenthash:base64:5]' },
               importLoaders: 2
             }
           },

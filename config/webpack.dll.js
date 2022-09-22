@@ -23,7 +23,7 @@ module.exports = {
     react: ['react', 'react-dom', 'react-router', 'react-router-dom', 'dva']
   },
   output: {
-    filename: '[name]-[hash:8].dll.js',
+    filename: '[name]-[contenthash:8].dll.js',
     path: path.resolve(__dirname, '../dll'),
     library: '[name]'
   },

@@ -46,7 +46,7 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              name: '[name].[hash:8].[ext]', // placeholder 占位符
+              name: '[name].[contenthash:8].[ext]', // placeholder 占位符
               outputPath: 'assets/', // 打包文件名
               limit: 1024 * 5, // 小于5KB则打包到js文件里，大于则使用file-loader的打包方式打包到assets里
               esModule: false // 支持img标签使用require动态指定图片
@@ -83,9 +83,9 @@ module.exports = {
         test: /\.(eot|woff2?|ttf|otf)$/,
         include: path.resolve(__dirname, '../src'), // 表示只解析以下目录，减少loader处理范围
         use: {
-          loader: 'url-loader',
+          loader: 'file-loader',
           options: {
-            name: '[name]-[hash:8].min.[ext]', // 和上面同理
+            name: '[name]-[contenthash:8].min.[ext]', // 和上面同理
             outputPath: 'fonts/',
             limit: 5000
           }

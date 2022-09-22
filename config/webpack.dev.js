@@ -5,7 +5,7 @@ const webpackConfigBase = require('./webpack.base')
 
 const path = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin') // 向dist文件中自动添加模版html,不生成dist目录
+const HtmlWebpackPlugin = require('html-webpack-plugin') // 向dist目录中自动添加模版html
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 打包后先清除dist文件，先于HtmlWebpackPlugin运行
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin') //将打包生产的dll.js文件自动引入html
 const fs = require('fs') //fs文件读取
@@ -32,7 +32,7 @@ const plugins = [
   // }),
   new CleanWebpackPlugin(), // 打包前先清除上一次dist文件，先于HtmlWebpackPlugin运行
   new HtmlWebpackPlugin({
-    // 向dist文件中自动添加模版html,不生成dist目录
+    // 向dist目录中自动添加模版html
     // filename: 'index.html',
     template: 'public/index.html',
     favicon: 'public/favicon.ico',
@@ -103,7 +103,7 @@ const webpackConfigDev = {
           {
             loader: 'css-loader',
             options: {
-              modules: { localIdentName: '[local]___[hash:base64:5]' },
+              modules: { localIdentName: '[local]___[contenthash:base64:5]' },
               importLoaders: 2,
               sourceMap: true
             }
